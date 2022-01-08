@@ -16,6 +16,7 @@ class CategoryController extends Controller
     {
         $this->repository = $model;
     }
+
     public function index()
     {
         $categories = $this->repository->get();
@@ -42,7 +43,7 @@ class CategoryController extends Controller
         $category = $this->repository->where('url', $url)->firstOrFail();
         $category->update($request->validated());
 
-        return response()->json(['message' => 'success']);
+        return response()->json(['message' => 'updated']);
     }
 
     public function destroy($url)
