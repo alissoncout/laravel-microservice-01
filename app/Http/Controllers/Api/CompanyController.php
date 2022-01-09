@@ -5,63 +5,95 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateCompany;
 use App\Http\Resources\CompanyResource;
-use App\Models\Company;
+use App\Jobs\CompanyCreatedJob;
+use App\Services\CompanyService;
 use App\Services\EvaluationService;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
 
-    protected $repository;
     protected $evaluationService;
+    protected $companyService;
 
-    public function __construct(Company $model, EvaluationService $evaluationService)
+    public function __construct(EvaluationService $evaluationService, CompanyService $companyService)
     {
-        $this->repository = $model;
         $this->evaluationService = $evaluationService;
+        $this->companyService = $companyService;
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        $companies = $this->repository->getCompanies($request->get('filter', ''));
+        $companies = $this->companyService->getCompanies($request->get('filter', ''));
 
         return CompanyResource::collection($companies);
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(StoreUpdateCompany $request)
     {
-        $company = $this->repository->create($request->validated());
+        $company = $this->companyService->createNewCompany($request->validated(), $request->image);
+
+        CompanyCreatedJob::dispatch($company->email)
+                            ->onQueue('queue_email');
 
         return new CompanyResource($company);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  string  $uuid
+     * @return \Illuminate\Http\Response
+     */
     public function show($uuid)
     {
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
+        $company = $this->companyService->getCompanyByUUID($uuid);
 
-        $evaluations = $this->evaluationService->getEvaluationCompany($uuid);
+        $evaluations = $this->evaluationService->getEvaluationsCompany($uuid);
 
         return (new CompanyResource($company))
                         ->additional([
-                            'evaluations' => json_decode($evaluations)
+                           'evaluations' => json_decode($evaluations)
                         ]);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string  $uuid
+     * @return \Illuminate\Http\Response
+     */
     public function update(StoreUpdateCompany $request, $uuid)
     {
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
-        $company->update($request->validated());
+        $this->companyService->updateCompany($uuid, $request->validated(), $request->image);
 
         return response()->json([
-            'message' => 'updated'
+            'message' => 'Updated'
         ]);
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  string  $uuid
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($uuid)
     {
-        $company = $this->repository->where('uuid', $uuid)->firstOrFail();
-        $company->delete();
+        $this->companyService->deleteCompany($uuid);
 
-        return response()->json(['message' => 'deleted'], 204);
+        return response()->json([], 204);
     }
 }

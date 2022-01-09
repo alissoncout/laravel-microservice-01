@@ -18,7 +18,7 @@ class EvaluationService
         $this->url = config('services.micro_02.url');
     }
 
-    public function getEvaluationCompany(string $company)
+    public function getEvaluationsCompany(string $company)
     {
         $response = $this->request('get', "/evaluations/{$company}");
 

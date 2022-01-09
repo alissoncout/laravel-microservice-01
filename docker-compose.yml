@@ -15,7 +15,7 @@ services:
             - ./:/var/www
         depends_on: 
             - redis_micro_01
-            - queue
+            - queue_micro_01
         networks: 
             - microservices
 
@@ -49,10 +49,10 @@ services:
             - microservices
 
     # queue micro 01
-    queue:
+    queue_micro_01:
         build: 
             args: 
-                user: carlos
+                user: alisson
                 uid: 1000
             context: ./
             dockerfile: Dockerfile
@@ -65,7 +65,7 @@ services:
         networks: 
             - microservices
 
-    #redis
+    #redis micro 01
     redis_micro_01:
         image: redis:latest
         networks: 
