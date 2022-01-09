@@ -19,8 +19,8 @@ services:
         networks: 
             - microservices
 
-    # nginx
-    nginx:
+    # nginx micro 01
+    nginx_micro_01:
         image: nginx:alpine
         restart: unless-stopped
         ports: 
