@@ -4,8 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c61ff82cbf0142a401a48a8161e1595a",
+    "content-hash": "551dd7426b5286e768162fad9056c50b",
     "packages": [
+        {
+            "name": "alissoncout/microservices-common",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alissoncout/microservices-http.git",
+                "reference": "dc68ee35ac9393dc99d2e5119200654123a694cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alissoncout/microservices-http/zipball/dc68ee35ac9393dc99d2e5119200654123a694cf",
+                "reference": "dc68ee35ac9393dc99d2e5119200654123a694cf",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alissoncout\\MicroservicesCommon\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alisson Couto",
+                    "email": "alissoncoutoads@outlook.com"
+                }
+            ],
+            "description": "Package Files Utils Microservices Courses",
+            "support": {
+                "issues": "https://github.com/alissoncout/microservices-http/issues",
+                "source": "https://github.com/alissoncout/microservices-http/tree/1.0.0"
+            },
+            "time": "2022-01-09T01:57:04+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.5",
