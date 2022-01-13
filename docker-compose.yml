@@ -15,7 +15,7 @@ services:
             - ./:/var/www
         depends_on: 
             - redis_micro_01
-            - queue_micro_01
+            #- queue_micro_01
         networks: 
             - microservices
 
@@ -49,21 +49,21 @@ services:
             - microservices
 
     # queue micro 01
-    queue_micro_01:
-        build: 
-            args: 
-                user: alisson
-                uid: 1000
-            context: ./
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        command: "php artisan queue:work"
-        volumes: 
-            - ./:/var/www
-        depends_on: 
-            - redis_micro_01
-        networks: 
-            - microservices
+    #queue_micro_01:
+    #    build: 
+    #        args: 
+    #            user: alisson
+    #            uid: 1000
+    #        context: ./
+    #        dockerfile: Dockerfile
+    #    restart: unless-stopped
+    #    command: "php artisan queue:work"
+    #    volumes: 
+    #        - ./:/var/www
+    #    depends_on: 
+    #        - redis_micro_01
+    #    networks: 
+    #        - microservices
 
     #redis micro 01
     redis_micro_01:
